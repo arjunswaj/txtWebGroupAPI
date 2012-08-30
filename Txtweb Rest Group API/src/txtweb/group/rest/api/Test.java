@@ -39,7 +39,13 @@ public class Test {
      * Password of the Group to be created
      * It is advised not to store password in the code. Use Txtweb's mobile service to create a group instead.
      */
-    private static final String MY_PASSWORD = "jobs!";
+    private static final String GROUP_PASSWORD = "jobs!";
+    
+    /**
+     * Password of the User for Login
+     * It is advised not to store password in the code.
+     */
+    private static final String USER_PASSWORD = "jobs!";
     
     /**
      * Description of the group to be created
@@ -48,7 +54,7 @@ public class Test {
 
     public static void main(String[] args) throws JSONException {
         JSONObject responseJSONObject = TxtwebGroupRESTAPI
-                .getMyGroups(MY_USER_ID, MY_SECRET_KEY);
+                .loginUser(MY_USER_ID, USER_PASSWORD);
         System.out.println(responseJSONObject.toString());
     }
 }

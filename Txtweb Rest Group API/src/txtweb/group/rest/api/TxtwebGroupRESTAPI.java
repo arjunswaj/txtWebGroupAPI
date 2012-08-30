@@ -229,6 +229,39 @@ public class TxtwebGroupRESTAPI {
 
         return responseJSONObject;
     }
+    
+    /**
+     * Login the User
+     * @param myUserID User ID associated with user
+     * @param myPassword User Password associated with User
+     * @return JSONObject of User Secret & List of all Groups & Group Secrets
+     * @throws JSONException 
+     */
+    public static JSONObject loginUser(String myUserID, String myPassword) throws JSONException {
+        JSONObject jsonInput = new JSONObject();
+
+        jsonInput.put(TxtwebConstants.USER_ID, myUserID);
+        jsonInput.put(TxtwebConstants.USER_PASSWORD, myPassword);
+
+        Client client = Client.create();
+        WebResource webResource = client.resource(getBaseURI());
+        ClientResponse response = webResource.path(TxtwebConstants.GROUP)
+                .path(TxtwebConstants.LOGIN)
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, jsonInput.toString());
+
+        if (response.getStatus() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : "
+                    + response.getStatus());
+        }
+
+        String output = response.getEntity(String.class);
+        JSONObject responseJSONObject = new JSONObject(output);
+
+        return responseJSONObject;
+    }
+    
     /**
      * Base URI for the Rest APIs
      * @return Base URI

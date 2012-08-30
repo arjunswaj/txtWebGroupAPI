@@ -46,6 +46,10 @@ public class TxtwebConstants {
      */
     public static final String CREATE = "create";
     
+    /**
+     * Login Path
+     */
+    public static final String LOGIN = "login";
     
     
     /**
@@ -88,4 +92,8 @@ public class TxtwebConstants {
      * Broadcast Group
      */
     public static final String BROADCAST_TYPE = "BROADCAST";
+    /**
+     * User Password
+     */
+    public static final String USER_PASSWORD = "USER_PASSWORD";
 }
