@@ -15,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Utility Class for accessing REST APIs using Jersey Client
  * @author arjun
  */
 public class TxtwebGroupRESTAPI {
