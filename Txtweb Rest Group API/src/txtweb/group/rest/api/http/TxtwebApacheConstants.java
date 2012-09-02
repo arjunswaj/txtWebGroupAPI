@@ -9,6 +9,7 @@ package txtweb.group.rest.api.http;
  * @author arjun
  */
 public class TxtwebApacheConstants {
+
     /**
      * Domain of the Web Service
      */
@@ -45,16 +46,13 @@ public class TxtwebApacheConstants {
      * Create a Chat group or a Broadcast Group
      */
     public static final String CREATE = "/create";
-    
     /**
      * Login Path
      */
     public static final String LOGIN = "/login";
-    
-    
     /**
      * User Id
-     */            
+     */
     public static final String USER_ID = "USER_ID";
     /**
      * Secret Key
@@ -107,13 +105,13 @@ public class TxtwebApacheConstants {
     /**
      * Response Code
      */
-	public static final String RESPONSE_CODE = "RESPONSE_CODE";
-	/**
-	 * Group Created
-	 */
-	public static final String TICKR_200 = "TICKR-200";
-	/**
-	 * Response Message
-	 */
-	public static final String RESPONSE_MESSAGE = "RESPONSE_MESSAGE";
+    public static final String RESPONSE_CODE = "RESPONSE_CODE";
+    /**
+     * Group Created
+     */
+    public static final String TICKR_200 = "TICKR-200";
+    /**
+     * Response Message
+     */
+    public static final String RESPONSE_MESSAGE = "RESPONSE_MESSAGE";
 }
