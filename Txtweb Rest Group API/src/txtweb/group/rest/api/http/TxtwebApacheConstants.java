@@ -39,9 +39,13 @@ public class TxtwebApacheConstants {
      */
     public static final String MEMBERS = "/members";
     /**
-     * List all members of the Group Owned By Me
+     * Broadcast to members of group
      */
     public static final String BROADCAST = "/broadcast";
+    /**
+     * Multicast to Selected members of group
+     */
+    public static final String MULTICAST = "/multicast";
     /**
      * Create a Chat group or a Broadcast Group
      */
@@ -114,4 +118,8 @@ public class TxtwebApacheConstants {
      * Response Message
      */
     public static final String RESPONSE_MESSAGE = "RESPONSE_MESSAGE";
+    /**
+     * Recipient IDs
+     */
+    public static final String RECIPIENT_IDS = "RECIPIENT_IDS";
 }

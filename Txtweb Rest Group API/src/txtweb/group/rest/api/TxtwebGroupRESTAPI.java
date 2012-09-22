@@ -11,6 +11,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.net.URI;
+import org.codehaus.jettison.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -136,6 +137,50 @@ public class TxtwebGroupRESTAPI {
         WebResource webResource = client.resource(getBaseURI());
         ClientResponse response = webResource.path(TxtwebConstants.GROUP)
                 .path(TxtwebConstants.BROADCAST)
+                .type(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(ClientResponse.class, jsonInput.toString());
+
+        if (response.getStatus() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : "
+                    + response.getStatus());
+        }
+
+        String output = response.getEntity(String.class);
+        JSONObject responseJSONObject = new JSONObject(output);
+
+        return responseJSONObject;
+    }
+    /**
+     * Broadcast message to the Members of the group
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with user
+     * @param myGroupName Group Name of Group owned by user
+     * @param myGroupSecretKey Secret Key associated with Group owned by the user
+     * @param myMessage Message that has to be broadcast to the Group
+     * @param recipientIds Recipients of the message
+     * @return JSONObject of list of Members and their Broadcast Status
+     * @throws JSONException 
+     */
+    public static JSONObject multicastMessageToSelectedMembersOfMyGroup(String myUserID, String mySecretKey,
+            String myGroupName, String myGroupSecretKey, String myMessage, String[] recipientIds) throws JSONException {
+        JSONObject jsonInput = new JSONObject();
+
+        JSONArray recipients = new JSONArray();
+        for (String recipientId : recipientIds) {
+            recipients.put(recipientId);
+        }
+        
+        jsonInput.put(TxtwebConstants.USER_ID, myUserID);
+        jsonInput.put(TxtwebConstants.USER_SECRET, mySecretKey);
+        jsonInput.put(TxtwebConstants.GROUP_NAME, myGroupName);
+        jsonInput.put(TxtwebConstants.GROUP_SECRET, myGroupSecretKey);
+        jsonInput.put(TxtwebConstants.MESSAGE, myMessage);
+        jsonInput.put(TxtwebConstants.RECIPIENT_IDS, recipients);
+        Client client = Client.create();
+        WebResource webResource = client.resource(getBaseURI());
+        ClientResponse response = webResource.path(TxtwebConstants.GROUP)
+                .path(TxtwebConstants.MULTICAST)
                 .type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(ClientResponse.class, jsonInput.toString());

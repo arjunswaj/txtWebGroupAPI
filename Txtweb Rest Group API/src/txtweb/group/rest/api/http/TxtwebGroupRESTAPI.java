@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.codehaus.jettison.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -204,6 +205,75 @@ public class TxtwebGroupRESTAPI {
             String url = TxtwebApacheConstants.BASE_URL
                     + TxtwebApacheConstants.GROUP
                     + TxtwebApacheConstants.BROADCAST;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Multicast message to the Members of the group
+     *
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with user
+     * @param myGroupName Group Name of Group owned by user
+     * @param myGroupSecretKey Secret Key associated with Group owned by the
+     * user
+     * @param myMessage Message that has to be broadcast to the Group
+     * @param recipientIds Recipients of the message
+     * @return JSONObject of list of Members and their Broadcast Status
+     * @throws JSONException
+     */
+    public static JSONObject multicastMessageToSelectedMembersOfMyGroup(
+            String myUserID, String mySecretKey, String myGroupName,
+            String myGroupSecretKey, String myMessage, String[] recipientIds) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+            JSONArray recipients = new JSONArray();
+            for(String recipientId: recipientIds){
+                recipients.put(recipientId);
+            }
+            jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, mySecretKey);
+            jsonInput.put(TxtwebApacheConstants.GROUP_NAME, myGroupName);
+            jsonInput.put(TxtwebApacheConstants.GROUP_SECRET, myGroupSecretKey);
+            jsonInput.put(TxtwebApacheConstants.MESSAGE, myMessage);
+            jsonInput.put(TxtwebApacheConstants.RECIPIENT_IDS, recipients);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.MULTICAST;
             HttpPost postRequest = new HttpPost(url);
 
             StringEntity input = new StringEntity(jsonInput.toString());

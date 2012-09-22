@@ -38,9 +38,13 @@ public class TxtwebConstants {
      */
     public static final String MEMBERS = "members";
     /**
-     * List all members of the Group Owned By Me
+     * Broadcast to members of group
      */
     public static final String BROADCAST = "broadcast";
+    /**
+     * Multicast to Selected members of group
+     */
+    public static final String MULTICAST = "multicast";
     /**
      * Create a Chat group or a Broadcast Group
      */
@@ -96,4 +100,8 @@ public class TxtwebConstants {
      * User Password
      */
     public static final String USER_PASSWORD = "USER_PASSWORD";
+    /**
+     * Recipient IDs
+     */
+    public static final String RECIPIENT_IDS = "RECIPIENT_IDS";
 }
