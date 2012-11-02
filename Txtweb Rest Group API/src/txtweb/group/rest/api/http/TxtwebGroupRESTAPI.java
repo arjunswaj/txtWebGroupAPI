@@ -260,7 +260,7 @@ public class TxtwebGroupRESTAPI {
         try {
             JSONObject jsonInput = new JSONObject();
             JSONArray recipients = new JSONArray();
-            for(String recipientId: recipientIds){
+            for (String recipientId : recipientIds) {
                 recipients.put(recipientId);
             }
             jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
@@ -406,6 +406,444 @@ public class TxtwebGroupRESTAPI {
             String url = TxtwebApacheConstants.BASE_URL
                     + TxtwebApacheConstants.GROUP
                     + TxtwebApacheConstants.CREATE;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Get list of all the groups by Pagination
+     *
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with User
+     * @param isAscending Is the Results sorted in Ascending Order
+     * @param offset The offset to be used
+     * @param limit The no. of results to be shown
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject getAllPublicGroupsByPagination(String myUserID, String mySecretKey,
+            Boolean isAscending, Integer offset, Integer limit) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+
+            JSONObject searchOpt = new JSONObject();
+            if (isAscending) {
+                searchOpt.put(TxtwebApacheConstants.SORT_ON_NAME, TxtwebApacheConstants.ASCENDING);
+            } else {
+                searchOpt.put(TxtwebApacheConstants.SORT_ON_NAME, TxtwebApacheConstants.DESCENDING);
+            }
+
+            jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, mySecretKey);
+            jsonInput.put(TxtwebApacheConstants.SEARCH_OPTIONS, searchOpt);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.PAGINATED_LIST_PATH
+                    + TxtwebApacheConstants.OFFSET
+                    + TxtwebApacheConstants.SEPARATOR
+                    + offset
+                    + TxtwebApacheConstants.LIMIT
+                    + TxtwebApacheConstants.SEPARATOR
+                    + limit;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Get list of all the groups I Follow
+     *
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with User
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject groupsIFollow(String myUserID, String mySecretKey) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+
+            jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, mySecretKey);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.FOLLOWED;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Get Details of the Group
+     *
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with User
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject getGroupDetails(String myUserID, String mySecretKey, String groupName) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+
+            jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, mySecretKey);
+            jsonInput.put(TxtwebApacheConstants.GROUP_NAME, groupName);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.GROUP_DETAILS;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Follow a Group
+     *
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with User
+     * @param groupName Name of the Group
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject followGroup(String myUserID, String mySecretKey, String groupName) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+
+            jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, mySecretKey);
+            jsonInput.put(TxtwebApacheConstants.GROUP_NAME, groupName);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.FOLLOW;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Unfollow a Group
+     *
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with User
+     * @param groupName Name of the Group
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject unfollowGroup(String myUserID, String mySecretKey, String groupName) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+
+            jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, mySecretKey);
+            jsonInput.put(TxtwebApacheConstants.GROUP_NAME, groupName);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.UNFOLLOW;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Edit a Group
+     *
+     * @param myUserID User ID associated with user
+     * @param mySecretKey Secret Key associated with User
+     * @param groupName Name of the Group
+     * @param groupData Group Data to be edited in JSON Format
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject editGroup(String myUserID, String mySecretKey, String groupName, JSONObject groupData) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+
+            jsonInput.put(TxtwebApacheConstants.USER_ID, myUserID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, mySecretKey);
+            jsonInput.put(TxtwebApacheConstants.GROUP_NAME, groupName);
+            jsonInput.put(TxtwebApacheConstants.GROUP_DATA, groupData);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.EDIT;
+            HttpPost postRequest = new HttpPost(url);
+
+            StringEntity input = new StringEntity(jsonInput.toString());
+            input.setContentType("application/json");
+            postRequest.setEntity(input);
+
+            HttpResponse response = httpClient.execute(postRequest);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Utility method to generate JSONObject for editing Group
+     *
+     * @param description Description Of the Group
+     * @param isPrivate Privacy Settings
+     * @return
+     */
+    public static JSONObject editDescriptionAndChangePrivacy(String description, Boolean isPrivate) {
+        try {
+            JSONObject groupData = new JSONObject();
+            if (null != description) {
+                groupData.put(TxtwebApacheConstants.GROUP_DESCRIPTION_FOR_EDIT, description);
+            }
+            if (null != isPrivate) {
+                groupData.put(TxtwebApacheConstants.GROUP_IS_PRIVATE, isPrivate);
+            }
+            return groupData;
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * List all the members of My Groups
+     * @param userID User ID associated with user
+     * @param userSecret Secret Key associated with User
+     * @param groupName Name of the Group
+     * @param groupSecret Secret Key Associated with Group
+     * @return 
+     */
+    public static JSONObject listMembersOfMyGroup(String userID,
+            String userSecret, String groupName, String groupSecret) {
+        try {
+            JSONObject jsonInput = new JSONObject();
+
+            jsonInput.put(TxtwebApacheConstants.USER_ID, userID);
+            jsonInput.put(TxtwebApacheConstants.USER_SECRET, userSecret);
+            jsonInput.put(TxtwebApacheConstants.GROUP_SECRET, groupSecret);
+            jsonInput.put(TxtwebApacheConstants.GROUP_NAME, groupName);
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP
+                    + TxtwebApacheConstants.MEMBERS;
             HttpPost postRequest = new HttpPost(url);
 
             StringEntity input = new StringEntity(jsonInput.toString());

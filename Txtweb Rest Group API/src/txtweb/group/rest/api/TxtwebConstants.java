@@ -9,6 +9,7 @@ package txtweb.group.rest.api;
  * @author arjun
  */
 public class TxtwebConstants {
+
     /**
      * Domain of the Web Service
      */
@@ -49,16 +50,49 @@ public class TxtwebConstants {
      * Create a Chat group or a Broadcast Group
      */
     public static final String CREATE = "create";
-    
     /**
      * Login Path
      */
     public static final String LOGIN = "login";
-    
-    
+    /**
+     * Paginated List Path
+     */
+    public static final String PAGINATED_LIST_PATH = "paginatedlist";
+    /**
+     * Offset
+     */
+    public static final String OFFSET = "offset";
+    /**
+     * Limit
+     */
+    public static final String LIMIT = "limit";
+    /**
+     * Separator
+     */
+    public static final String SEPARATOR = "/";
+    /**
+     * Groups I Follow
+     */
+    public static final String FOLLOWED = "followed";
+    /**
+     * Groups Details
+     */
+    public static final String GROUP_DETAILS = "groupdetails";
+    /**
+     * Follow Group
+     */
+    public static final String FOLLOW = "follow";
+    /**
+     * Unfollow Group
+     */
+    public static final String UNFOLLOW = "unfollow";
+    /**
+     * Edit Group
+     */
+    public static final String EDIT = "edit";
     /**
      * User Id
-     */            
+     */
     public static final String USER_ID = "USER_ID";
     /**
      * Secret Key
@@ -80,6 +114,14 @@ public class TxtwebConstants {
      * Group Password
      */
     public static final String GROUP_PASSWORD = "GROUP_PASSWORD";
+    /**
+     * Description of the Group
+     */
+    public static final String GROUP_DESCRIPTION_FOR_EDIT = "GROUP_DESCRIPTION";
+    /**
+     * Group Data
+     */
+    public static final String GROUP_DATA = "GROUP_DATA";
     /**
      * Type of the Group that is created
      */
@@ -104,4 +146,24 @@ public class TxtwebConstants {
      * Recipient IDs
      */
     public static final String RECIPIENT_IDS = "RECIPIENT_IDS";
+    /**
+     * Search Options
+     */
+    public static final String SEARCH_OPTIONS = "SEARCH_OPTIONS";
+    /**
+     * Sort On Name
+     */
+    public static final String SORT_ON_NAME = "SORT_ON_NAME";
+    /**
+     * Ascending Order
+     */
+    public static final String ASCENDING = "ASCENDING";
+    /**
+     * Descending Order
+     */
+    public static final String DESCENDING = "DESCENDING";
+    /**
+     * Group Is Private
+     */
+    public static final String GROUP_IS_PRIVATE = "GROUP_IS_PRIVATE";
 }
