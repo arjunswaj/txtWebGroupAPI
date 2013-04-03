@@ -69,7 +69,7 @@ public class TxtwebGroupRESTAPI {
     }
     
     /**
-     * Get List of all the Public Groups
+     * Get List of all the Featured Groups
      *
      * @return JSONObject of list of Groups
      * @throws JSONException
