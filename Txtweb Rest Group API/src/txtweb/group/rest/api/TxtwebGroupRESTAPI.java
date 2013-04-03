@@ -43,6 +43,28 @@ public class TxtwebGroupRESTAPI {
         return responseJSONObject;
     }
 
+        /**
+     * Get List of all the Public Groups
+     *
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject listFeaturedGroups() throws JSONException {
+        Client client = Client.create();
+        WebResource webResource = client.resource(getBaseURI());
+        ClientResponse response = webResource.path(TxtwebConstants.GROUP).path(TxtwebConstants.FEATURED_LIST).accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
+        if (response.getStatus() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : "
+                    + response.getStatus());
+        }
+
+        String output = response.getEntity(String.class);
+        JSONObject responseJSONObject = new JSONObject(output);
+
+        return responseJSONObject;
+    }
+    
     /**
      * Get list of all the groups owned by Me
      *

@@ -31,6 +31,10 @@ public class TxtwebConstants {
      */
     public static final String LIST = "list";
     /**
+     * List all Featured Groups
+     */
+    public static final String FEATURED_LIST = "featuredlist";
+    /**
      * List all Groups Owned By Me
      */
     public static final String MY_GROUPS = "mygroups";

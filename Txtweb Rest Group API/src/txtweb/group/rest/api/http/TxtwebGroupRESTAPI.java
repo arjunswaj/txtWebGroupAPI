@@ -67,6 +67,49 @@ public class TxtwebGroupRESTAPI {
         }
         return null;
     }
+    
+    /**
+     * Get List of all the Public Groups
+     *
+     * @return JSONObject of list of Groups
+     * @throws JSONException
+     */
+    public static JSONObject listFeaturedGroups() {
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String url = TxtwebApacheConstants.BASE_URL
+                    + TxtwebApacheConstants.GROUP + TxtwebApacheConstants.FEATURED_LIST;
+            HttpGet getRequest = new HttpGet(url);
+            getRequest.addHeader("accept", "application/json");
+
+            HttpResponse response = httpClient.execute(getRequest);
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (response.getEntity().getContent())));
+
+            StringBuilder output = new StringBuilder();
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                output.append(line);
+            }
+            httpClient.getConnectionManager().shutdown();
+            JSONObject responseJSONObject = new JSONObject(output.toString());
+
+            return responseJSONObject;
+        } catch (UnsupportedEncodingException e1) {
+            e1.printStackTrace();
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Login the User

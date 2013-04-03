@@ -54,7 +54,7 @@ public class Test {
 
     public static void main(String[] args) throws JSONException {
         JSONObject responseJSONObject = TxtwebGroupRESTAPI
-                .loginUser(MY_USER_ID, USER_PASSWORD);
-        System.out.println(responseJSONObject.toString());
+                .listFeaturedGroups();
+        System.out.println(responseJSONObject.toString(1));
     }
 }

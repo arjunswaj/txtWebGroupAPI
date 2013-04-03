@@ -55,8 +55,7 @@ public class Test {
     public static void main(String[] args) throws JSONException {
         JSONObject groupData = TxtwebGroupRESTAPI
                 .editDescriptionAndChangePrivacy(MY_GROUP_DESCRIPTION, null);
-        JSONObject responseJSONObject = TxtwebGroupRESTAPI
-                .loginUser(MY_USER_ID, USER_PASSWORD);
-        System.out.println(responseJSONObject.toString());
+        JSONObject responseJSONObject = TxtwebGroupRESTAPI.listFeaturedGroups();
+        System.out.println(responseJSONObject.toString(1));
     }
 }

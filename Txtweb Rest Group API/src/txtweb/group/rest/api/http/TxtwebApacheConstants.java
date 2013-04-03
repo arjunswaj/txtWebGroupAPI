@@ -30,6 +30,10 @@ public class TxtwebApacheConstants {
      * List all Groups
      */
     public static final String LIST = "/list";
+        /**
+     * List all Featured Groups
+     */
+    public static final String FEATURED_LIST = "/featuredlist";
     /**
      * List all Groups Owned By Me
      */
